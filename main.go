@@ -36,6 +36,10 @@ func renderNativeLatex(cfg config) http.HandlerFunc {
 			http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
 			return
 		}
+		if !isPlainText(r.Header.Get("Content-Type")) {
+			http.Error(w, "Unsupported Content-Type", http.StatusUnsupportedMediaType)
+			return
+		}
 		if !authorize(cfg.apiKey, r) {
 			http.Error(w, "Unauthorized", http.StatusUnauthorized)
 			return
@@ -233,6 +237,14 @@ func getEnvBool(key string, defaultValue bool) bool {
 		return defaultValue
 	}
 	return parsed
+}
+
+func isPlainText(contentType string) bool {
+	if contentType == "" {
+		return false
+	}
+	mediaType := strings.ToLower(strings.TrimSpace(strings.Split(contentType, ";")[0]))
+	return mediaType == "text/plain"
 }
 
 func main() {

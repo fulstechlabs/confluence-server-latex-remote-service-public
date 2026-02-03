@@ -14,6 +14,7 @@ This repo is core service logic. Deployment is customer-owned.
 
 - `POST /render-latex`
   - Body: raw LaTeX content (full `.tex` document)
+  - Content-Type: `text/plain`
   - Response: `image/png`
 - `GET /healthz`
   - Response: `200 ok`
