@@ -147,3 +147,13 @@ Notes:
 - `pdflatex error`/`pdfcrop error`/`pdftoppm error`: verify TeX Live and poppler utilities are installed.
 - Empty response or 500: check service logs for full command output.
 - Large inputs rejected: increase `MAX_BODY_BYTES`.
+
+## Kubernetes example (customer-owned)
+
+A minimal manifest is provided at `examples/k8s/latex-remote-service.yaml`. It is best-effort and not a supported deliverable.
+
+Apply:
+
+```bash
+kubectl apply -f examples/k8s/latex-remote-service.yaml
+```

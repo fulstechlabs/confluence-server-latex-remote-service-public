@@ -1,0 +1,65 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: latex-remote-service
+  labels:
+    app: latex-remote-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: latex-remote-service
+  template:
+    metadata:
+      labels:
+        app: latex-remote-service
+    spec:
+      containers:
+        - name: latex-remote-service
+          image: fulstechlabs/confluence-server-latex-remote-service:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 18080
+          env:
+            - name: PORT
+              value: "18080"
+            # Optional: protect endpoint with an API key
+            # - name: LATEX_SERVICE_API_KEY
+            #   value: "change-me"
+            # Optional: allow shell-escape (default is false)
+            # - name: ALLOW_SHELL_ESCAPE
+            #   value: "true"
+            # Optional: tune caps
+            # - name: BODY_LIMIT_BYTES
+            #   value: "1048576"
+            # - name: COMMAND_TIMEOUT_SECONDS
+            #   value: "10"
+            # - name: WORKER_LIMIT
+            #   value: "2"
+          readinessProbe:
+            httpGet:
+              path: /healthz
+              port: 18080
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: 18080
+            initialDelaySeconds: 10
+            periodSeconds: 20
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: latex-remote-service
+  labels:
+    app: latex-remote-service
+spec:
+  type: ClusterIP
+  selector:
+    app: latex-remote-service
+  ports:
+    - name: http
+      port: 18080
+      targetPort: 18080
