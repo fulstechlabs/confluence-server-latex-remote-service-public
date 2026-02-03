@@ -1,0 +1,3 @@
+% Less restrictive file access (still no shell escape by default)
+openin_any = a
+openout_any = a

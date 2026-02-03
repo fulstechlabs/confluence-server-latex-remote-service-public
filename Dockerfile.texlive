@@ -1,0 +1,7 @@
+# Stage 2: Run
+FROM alpine:3.20.2
+
+# Install necessary packages including texlive-full and poppler-utils
+RUN apk add --no-cache \
+    texlive-full \
+    poppler-utils

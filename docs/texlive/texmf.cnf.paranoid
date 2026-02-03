@@ -1,0 +1,3 @@
+% Paranoid file access (restricts reads/writes outside TeX tree)
+openin_any = p
+openout_any = p
